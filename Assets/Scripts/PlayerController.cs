@@ -5,8 +5,10 @@ public class PlayerController : MonoBehaviour
 {
     private InputAction moveAction;
     private InputAction fireAction;
+    private int Health = 5;
     
-    private int speed = 5;
+    public int speed = 5;
+    public int capasity = 10;
 
     public float xRange;
     public float yRange;
@@ -22,13 +24,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /* if (true)
-         {
-
-         }*/
-
-        MoveSideControl();
-        MoveUpControl();
+        if (!isGameOver)
+        {
+            MoveSideControl();
+            MoveUpControl();
+        }
     }
 
     void MoveSideControl()
@@ -60,6 +60,25 @@ public class PlayerController : MonoBehaviour
         if (transform.position.y > xRange)
         {
             transform.position = new Vector3(transform.position.x , yRange , transform.position.z);
+        }
+    }
+
+    void Fire()
+    {
+
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle")) 
+        {
+            Health -= 1;
+            Destroy(collision.gameObject);
+
+            if (Health <= 0)
+            {
+                isGameOver = true;
+            }
         }
     }
 }
