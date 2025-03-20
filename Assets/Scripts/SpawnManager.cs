@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
@@ -17,10 +18,12 @@ public class SpawnManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (!playerController.isGameOver)
+        /*if (!playerController.isGameOver)
         {
             InvokeRepeating(nameof(Spawn), 1, 3);
-        }
+        }*/
+
+        StartCoroutine(SpawnCorontine());
     }
 
     void Spawn()
@@ -33,5 +36,21 @@ public class SpawnManager : MonoBehaviour
         (
             obstaclePrefab[randomObject], spawnPoint[randomPoint].position, obstaclePrefab[randomObject].transform.rotation
         );
+    }
+
+    IEnumerator SpawnCorontine()
+    {
+        yield return new WaitForSeconds(2f);
+
+        while (!playerController.isGameOver)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Spawn();
+            }
+
+            yield return new WaitForSeconds(2f);
+        }
+
     }
 }
