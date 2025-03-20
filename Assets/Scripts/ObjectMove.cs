@@ -4,7 +4,7 @@ public class ObjectMove : MonoBehaviour
 {
     public int speedObj;
 
-    private int leftBound = -15;
+    private int leftBound = -10;
     private PlayerController playerController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,7 +24,7 @@ public class ObjectMove : MonoBehaviour
             transform.Translate(Vector3.back * Time.deltaTime * speedObj);
         }
 
-        if (transform.position.z < leftBound && gameObject.CompareTag("Obstacle") || transform.position.z < leftBound && gameObject.CompareTag("Buff"))
+        if (transform.position.z < leftBound && gameObject)
         {
             Destroy(gameObject);
         }

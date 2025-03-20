@@ -6,7 +6,9 @@ public class PlayerController : MonoBehaviour
     private InputAction moveAction;
     private InputAction fireAction;
     private int Health = 5;
-    
+    private float rayDistance = 200f;
+    public GameObject vfxHitPoint;
+
     public int speed = 5;
     public int capasity = 10;
 
@@ -19,6 +21,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         moveAction = InputSystem.actions.FindAction("Move");
+        fireAction = InputSystem.actions.FindAction("Fire");
     }
 
     // Update is called once per frame
@@ -28,6 +31,7 @@ public class PlayerController : MonoBehaviour
         {
             MoveSideControl();
             MoveUpControl();
+            Fire();
         }
     }
 
@@ -65,7 +69,19 @@ public class PlayerController : MonoBehaviour
 
     void Fire()
     {
+        RaycastHit hit;
 
+        Debug.DrawRay(transform.position,-transform.forward * rayDistance,Color.yellow);
+
+        if (fireAction.IsPressed() && Physics.Raycast(transform.position,-transform.forward, out hit ,rayDistance))
+        {
+            if (hit.collider.CompareTag("Obstacle"))
+            {
+                Instantiate(vfxHitPoint, hit.point, Quaternion.identity);
+
+
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
